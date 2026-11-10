@@ -25,9 +25,14 @@ jobs:
   secrets:
     name: Secret scan
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      pull-requests: read # action lists the PR's commits
     steps:
       - uses: actions/checkout@v4
         with:
           fetch-depth: 0 # full history, not just the PR head
       - name: Gitleaks
         uses: gitleaks/gitleaks-action@v2
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} # required on pull_request events
